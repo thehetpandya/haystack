@@ -134,7 +134,7 @@ class ElasticsearchDocumentStore(BaseDocumentStore):
                     raise Exception(f"The '{index_name}' index in Elasticsearch already has a field called '{self.embedding_field}'"
                                     f" with the type '{mapping['properties'][self.embedding_field]['type']}'. Please update the "
                                     f"document_store to use a different name for the embedding_field parameter.")
-                mapping["properties"][self.embedding_field] = {"type": "dense_vector", "dims": self.embedding_dim}
+                mapping["properties"][self.embedding_field] = {"type": "dense_vector"}
                 self.client.indices.put_mapping(index=index_name, body=mapping)
             return
 
@@ -166,7 +166,7 @@ class ElasticsearchDocumentStore(BaseDocumentStore):
                 }
             }
             if self.embedding_field:
-                mapping["mappings"]["properties"][self.embedding_field] = {"type": "dense_vector", "dims": self.embedding_dim}
+                mapping["mappings"]["properties"][self.embedding_field] = {"type": "dense_vector"}
 
         try:
             self.client.indices.create(index=index_name, body=mapping)
